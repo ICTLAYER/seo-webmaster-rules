@@ -1,0 +1,14 @@
+{
+  "name": "@ictlayer/seo-webmaster-rules",
+  "version": "1.0.0",
+  "description": "An Agent Skill for SEO audits and content reviews using 77 classic webmaster factors.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ICTLAYER/seo-webmaster-rules.git"
+  },
+  "files": ["SKILL.md", "references/full-ranking-factors.md", "README.md", "LICENSE"],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

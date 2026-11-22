@@ -1,0 +1,49 @@
+name: Publish skill
+on:
+  push:
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
+
+concurrency:
+  group: publish-skill
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com
+          scope: '@ictlayer'
+      - name: Publish versioned skill and release ZIP
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version=$(node -p "require('./package.json').version")
+          name=$(node -p "require('./package.json').name")
+          tag="v$version"
+          asset="seo-webmaster-rules-$tag.zip"
+          files=(SKILL.md references/full-ranking-factors.md README.md LICENSE)
+          git archive --format=zip --prefix=seo-webmaster-rules/ -o "$RUNNER_TEMP/$asset" HEAD -- "${files[@]}"
+          unzip -t "$RUNNER_TEMP/$asset"
+          npm pack --dry-run --ignore-scripts
+          if ! npm view "$name@$version" version --registry=https://npm.pkg.github.com | grep -Fx "$version"; then
+            npm publish --ignore-scripts --registry=https://npm.pkg.github.com
+          fi
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" "$RUNNER_TEMP/$asset" --target "$GITHUB_SHA" \
+              --title "SEO Webmaster Rules $tag" \
+              --notes "Download the skill ZIP below and extract its seo-webmaster-rules folder into your agent's skills directory. Includes all 77 numbered factors, the audit workflow, installation instructions and the MIT license. GitHub npm package: \`$name@$version\`."
+          elif ! gh release view "$tag" --json assets --jq '.assets[].name' | grep -Fx "$asset"; then
+            gh release upload "$tag" "$RUNNER_TEMP/$asset"
+          fi
