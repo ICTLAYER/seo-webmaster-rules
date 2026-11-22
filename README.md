@@ -6,6 +6,16 @@ The [reference](references/full-ranking-factors.md) preserves the historical des
 
 ## Install in a project
 
+From your target project, run the Skills CLI and choose your agent when prompted.
+
+```sh
+npx skills add ICTLAYER/seo-webmaster-rules
+```
+
+For a project-local Codex installation, run `npx skills add ICTLAYER/seo-webmaster-rules --skill seo-webmaster-rules --agent codex -y`.
+
+### Manual installation
+
 Copy the entire `seo-webmaster-rules` folder into the destination for your tool. Open the target project and start a new agent session. Keep `references/` beside `SKILL.md` so the relative link resolves. The package uses the [Agent Skills format](https://agentskills.io/specification) and requires no scripts or credentials.
 
 | Tool | Project destination | Use |

@@ -1,0 +1,26 @@
+name: Verify Skills CLI installation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/verify-install.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the public skill in a clean project
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$(mktemp -d)"
+          npx --yes skills add ICTLAYER/seo-webmaster-rules --skill seo-webmaster-rules --agent codex -y
+          skill=.agents/skills/seo-webmaster-rules
+          grep -Fx 'name: seo-webmaster-rules' "$skill/SKILL.md"
+          test "$(grep -Ec '^\| [0-9]+ \|' "$skill/references/full-ranking-factors.md")" = 77
