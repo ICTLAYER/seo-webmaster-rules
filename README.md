@@ -1,8 +1,21 @@
 # SEO Webmaster Rules
 
-Use this Agent Skill to review a page, draft, link profile or site against the 77 factors in `SEO.docx`. Findings retain the original factor IDs and ratings, so an editor can trace each recommendation back to its source. The skill prioritizes actionable +3 and +2 opportunities and gives sustainable alternatives when a request involves a -2 or -3 technique.
+Use this agent skill to audit a website, review a link profile, or revise a page before publication. Each finding connects a specific piece of evidence to a numbered rule, a recommended change, and a way to verify the result.
 
-The [reference](references/full-ranking-factors.md) preserves the historical descriptions, including outdated advice. The [instructions](SKILL.md) explain how to apply them today. For example, factor 3 records an old keyword-density target. A reviewer checks whether the copy conveys its topic naturally. E-E-A-T, helpful content, user experience and Core Web Vitals inform the review without receiving invented scores. [Google’s helpful content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) · [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals)
+## SEO Basic Rules
+
+The [SEO Basic Rules](references/full-ranking-factors.md) cover 77 historical SEO factors in six groups. The factor IDs and signed ratings let editors and developers trace a recommendation back to its source. The ratings express the original checklist’s priorities. Adding them together cannot predict a page’s search position.
+
+| Factor IDs | Topic | Example review question |
+| --- | --- | --- |
+| 1–16 | Keywords | Do the title, headings, and opening paragraph make the page’s topic clear to a reader? |
+| 17–34 | Internal, inbound, and outbound links | Does each internal link describe its destination? Which links can the site owner change? |
+| 35–38 | Meta tags | Does the meta description accurately summarize this page? |
+| 39–51 | Content | What original information does this page add, and does it answer the visitor’s question? |
+| 52–58 | Scripts and media | Can visitors read the main content and understand informative images and videos? |
+| 59–77 | Domains, URLs, and site management | Do intended landing pages load, appear in the sitemap, and remain reachable after redirects? |
+
+The [review instructions](SKILL.md) explain how to apply historical rules to a current audit. For example, factor 3 records a keyword-density target. A reviewer checks whether the copy explains the topic clearly and flags repetition that makes it harder to read. The skill also considers content quality, mobile usability, and Core Web Vitals when evidence is available. See Google’s guidance on [helpful content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) and [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals).
 
 ## Install in a project
 
@@ -37,7 +50,9 @@ Copy-Item -LiteralPath $source -Destination .agents/skills/ -Recurse
 
 Confirm that `.agents/skills/seo-webmaster-rules/SKILL.md` exists. To check discovery and reference access together, ask “Use seo-webmaster-rules. Explain the difference between factors 29 and 32.” Expect the answer to identify unsolicited inbound links (0) and deliberate outbound links to link farms (-3).
 
-## Use the skill
+## Request a review
+
+Provide the audience, the page or site section, and the evidence you want reviewed. For a copy review, paste the draft or HTML. For a technical audit, attach the relevant crawl export, sitemap, or performance report. The review identifies which findings the evidence supports and what still needs checking.
 
 - **Product page** — “Review this title, description and image markup for a teak dining table. Give revised copy and cite the relevant factors.”
 - **Technical audit** — “Use this crawl export and sitemap to find intended landing pages that crawlers cannot reach. Give a verification step for each fix.”
@@ -46,6 +61,10 @@ Confirm that `.agents/skills/seo-webmaster-rules/SKILL.md` exists. To check disc
 ## Contribute
 
 Open a pull request describing the problem, the affected factor IDs and an example of the expected review. For transcription fixes, include the corresponding source wording and rating. Preserve numbering 1–77 and the six source groups. For changes to modern advice or tool setup, cite the relevant official documentation. Test both an ordinary SEO request and a request for a prohibited tactic.
+
+## Credits
+
+Project credit goes to [ICT Layer](https://www.ictlayer.com/).
 
 ## License
 
